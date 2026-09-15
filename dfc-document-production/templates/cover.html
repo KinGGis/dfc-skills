@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="fr"><head><meta charset="utf-8">
+<style>
+  @page { margin: 0; size: A4; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: "Calibri","Carlito","Arial",sans-serif;
+    background: #1C1C1C;
+    color: #fff;
+    width: 210mm; height: 297mm;
+    position: relative;
+    -webkit-print-color-adjust: exact; print-color-adjust: exact;
+  }
+  .topbar { height: 10mm; width: 100%; background: #1C1C1C; }
+  .topbar .gold { height: 10mm; width: 42%; background: #C5A253; float: left; }
+  .wrap { padding: 0 26mm; }
+  .logo { text-align: center; margin-top: 40mm; }
+  .logo img { width: 42mm; }
+  .title {
+    text-align: center; text-transform: uppercase;
+    font-size: 30pt; font-weight: 700; line-height: 1.12;
+    margin-top: 20mm; letter-spacing: 0.5pt;
+  }
+  .subtitle { text-align: center; color: #C5A253; font-size: 13pt; margin-top: 7mm; }
+  .kv { width: 100%; border-collapse: collapse; margin: 16mm 0 0 0; border-left: 4px solid #C5A253; }
+  .kv td { padding: 5.5pt 14pt; border-bottom: 0.5pt solid rgba(255,255,255,0.12); font-size: 10pt; }
+  .kv td.k { color: #C5A253; font-weight: 700; width: 34%; }
+  .kv td.v { color: #E9E9E9; }
+  .foot {
+    position: absolute; bottom: 14mm; left: 26mm; right: 26mm;
+    text-align: center; color: #9A9A9A; font-size: 8.5pt;
+  }
+  .foot .line { width: 60mm; height: 1pt; background: #C5A253; margin: 10pt auto 0; }
+</style></head>
+<body>
+  <div class="topbar"><div class="gold"></div></div>
+  <div class="wrap">
+    <div class="logo"><img src="data:image/png;base64,__LOGO_WHITE__" alt="DualForce Capital"></div>
+    <div class="title">__TITLE__</div>
+    <div class="subtitle">__SUBTITLE__</div>
+    <table class="kv">__COVER_ROWS__</table>
+  </div>
+  <div class="foot">__CONFIDENTIAL__<div class="line"></div></div>
+</body></html>

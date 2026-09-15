@@ -1,0 +1,125 @@
+/* ============================================================
+   DFC BRAND KIT — feuille de style documentaire
+   DualForce Capital Ltd
+   Moteur: HTML/CSS -> PDF (wkhtmltopdf, moteur WebKit)
+   Palette et polices alignees sur les fichiers DFC reels.
+   ============================================================ */
+
+:root {
+  --ink:   #1C1C1C;  /* anthracite, fond sombre principal   */
+  --ink2:  #3A3A3A;  /* gris fonce, bandeaux de section     */
+  --black: #0D0D0D;  /* noir profond                        */
+  --gold:  #C5A253;  /* or antique mat, accent signature    */
+  --cream: #EFE4C8;  /* creme, bande KPI et encadres        */
+  --panel: #F2F2F0;  /* blanc casse, panneaux legers        */
+  --rule:  #D9D9D6;  /* gris clair, filets                  */
+  --grey:  #6E6E6E;  /* gris moyen, sous-titres, legendes   */
+  --green: #4A7C59;  /* vert, chiffres positifs             */
+  --red:   #A63D3D;  /* rouge, chiffres negatifs            */
+  --white: #FFFFFF;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  font-family: "Calibri", "Carlito", "Arial", sans-serif;
+  font-size: 10.5pt;
+  line-height: 1.5;
+  color: var(--ink);
+  margin: 0;
+}
+
+p { margin: 0 0 8pt 0; text-align: justify; }
+strong { font-weight: 700; }
+.pos { color: var(--green); font-weight: 700; }
+.neg { color: var(--red);   font-weight: 700; }
+.muted { color: var(--grey); }
+
+/* ---------- Titres ---------- */
+h1, h2, h3 { font-weight: 700; margin: 0; }
+
+/* Bandeau de section : bloc sombre, liseret or a gauche, titre capitales */
+.section {
+  background: var(--ink);
+  border-left: 5px solid var(--gold);
+  padding: 9pt 14pt;
+  margin: 20pt 0 12pt 0;
+  page-break-inside: avoid;
+}
+.section h2 {
+  color: var(--white);
+  font-size: 14pt;
+  text-transform: uppercase;
+  letter-spacing: 0.4pt;
+}
+.section .sub {
+  color: var(--gold);
+  font-size: 9pt;
+  margin-top: 2pt;
+}
+
+/* Sous-titres de niveau 3 */
+h3.subhead {
+  font-size: 11pt;
+  color: var(--ink);
+  margin: 14pt 0 4pt 0;
+}
+
+/* ---------- Bande KPI (3 chiffres cles) ---------- */
+.kpi {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--cream);
+  margin: 4pt 0 12pt 0;
+}
+.kpi td {
+  width: 33.33%;
+  text-align: center;
+  padding: 14pt 8pt;
+  vertical-align: middle;
+}
+.kpi .val { font-size: 20pt; font-weight: 700; color: var(--ink); }
+.kpi .lbl { font-size: 8.5pt; color: var(--grey); margin-top: 4pt; }
+
+/* ---------- Encadre "Ce qu'il faut retenir" ---------- */
+.retain {
+  background: var(--cream);
+  border-left: 5px solid var(--gold);
+  padding: 10pt 14pt;
+  margin: 12pt 0;
+  page-break-inside: avoid;
+}
+.retain .t { font-weight: 700; margin-bottom: 4pt; }
+.retain p { font-size: 9.5pt; margin: 0; }
+
+/* ---------- Tableaux ---------- */
+table.data {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 8pt 0 12pt 0;
+  font-size: 9.5pt;
+}
+table.data thead th {
+  background: var(--ink);
+  color: var(--white);
+  font-weight: 700;
+  text-align: left;
+  padding: 7pt 10pt;
+}
+table.data thead th.num { text-align: right; }
+table.data tbody td {
+  padding: 6pt 10pt;
+  border-bottom: 0.5pt solid var(--rule);
+}
+table.data tbody td.num { text-align: right; font-variant-numeric: tabular-nums; }
+table.data tbody tr:nth-child(even) { background: var(--panel); }
+table.data tbody tr.total,
+table.data tbody tr.total td { background: var(--cream); font-weight: 700; }
+
+/* Table cle/valeur (page de garde) */
+table.kv { width: 100%; border-collapse: collapse; margin: 0; }
+table.kv td { padding: 7pt 12pt; border-bottom: 0.5pt solid rgba(255,255,255,0.12); font-size: 9.5pt; }
+table.kv td.k { color: var(--gold); font-weight: 700; width: 34%; }
+table.kv td.v { color: #EDEDED; }
+
+hr.rule { border: none; border-top: 1pt solid var(--gold); margin: 14pt 0; }
