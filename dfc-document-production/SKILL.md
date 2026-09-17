@@ -1,54 +1,49 @@
 ---
 name: dfc-document-production
-description: Produire tout livrable DFC destiné à être lu (rapport de régime, note, arrêté de NAV, briefing macro, comité, deck) strictement à la charte graphique DualForce Capital. À charger dès qu'un rôle DFC doit RESTITUER un livrable formaté, pas seulement le raisonner. Déclenche sur « produis le rapport », « mets à la charte », « génère le PDF/Word/PPT », « le briefing », « le comité ». Ne jamais fabriquer un thème générique: le rendu passe toujours par le moteur de charte fourni ici.
+description: Produire tout livrable DFC destine a etre lu (rapport de regime, note, arrete de NAV, briefing, comite) strictement a la charte DualForce Capital, via le service de rendu DFC. A charger des qu'un role DFC doit RESTITUER un livrable formate. Ne jamais fabriquer un theme generique; le rendu passe toujours par le service.
 ---
 
 # Production documentaire DFC
 
-Ce skill garantit qu'un livrable DFC sort toujours à la charte de la maison, et jamais avec un thème générique inventé par le modèle. Il fournit la charte, le moteur de rendu et la structure obligatoire de chaque type de document.
+Ce skill garantit qu'un livrable DFC sort toujours a la charte de la maison, jamais avec un theme generique. Tu ne fabriques jamais un habillage improvise (couleurs teal, barres rouges, wordmark sans logo). Tu ne dessines pas la charte toi-meme: tu produis un pack de contenu et tu appelles le service de rendu DFC, qui renvoie le PDF a la charte.
 
-Règle absolue: tu ne rends jamais un document DFC avec un habillage improvisé (couleurs teal, barres rouges, wordmark sans logo, etc.). Tout rendu passe par le moteur de ce skill. Si le moteur ne peut pas tourner, tu livres le contenu structuré (pack de contenu) et tu le dis, tu n'improvises pas une charte.
+Regle absolue: si le service est injoignable, tu livres le pack de contenu structure et tu le signales; tu n'improvises jamais une charte.
 
-## 1. Charte DFC (valeurs canoniques)
+## 1. Charte (valeurs canoniques, pour reference)
 
-Couleurs: anthracite #1C1C1C (fond sombre), gris foncé #3A3A3A (bandeaux de section), or antique mat #C5A253 (accent signature), crème #EFE4C8 (bande KPI, encadrés, lignes de total), blanc cassé #F2F2F0 (panneaux, lignes alternées), gris clair #D9D9D6 (filets), gris moyen #6E6E6E (sous-titres), vert #4A7C59 (chiffres positifs), rouge #A63D3D (chiffres négatifs).
+Couleurs: anthracite #1C1C1C (fond sombre), gris fonce #3A3A3A (bandeaux), or antique mat #C5A253 (accent), creme #EFE4C8 (bande KPI, encadres, totaux), blanc casse #F2F2F0 (panneaux, lignes alternees), gris clair #D9D9D6 (filets), gris moyen #6E6E6E (sous-titres), vert #4A7C59 (positifs), rouge #A63D3D (negatifs). Police Calibri. A4 pour les documents. Jamais de tiret cadratin, jamais de couleur hors palette. Le service applique cette charte; tu n'as pas a la reproduire.
 
-Police: Calibri (repli Carlito puis Arial). Titres en capitales, gras. Format 16:9 pour les decks, A4 pour les documents.
+## 2. Le pack de contenu (ce que TU produis)
 
-Logo: version blanche (assets/dfc-logo-white.png) sur fonds sombres, version noire (assets/dfc-logo-dark.png) sur fonds clairs, monogramme seul (assets/dfc-emblem-dark.png) pour les en-têtes de pages internes.
+Format DFC-CONTENT-PACK v1 (spec DFC-PACK-001), en YAML ou JSON:
+doc_type, reference, title, subtitle, classification, cover_meta (lignes cle/valeur), kpis (exactement trois, au niveau du pack ou d'une section), sections (heading, subhead, body avec **gras** pour les chiffres cles, retain optionnel, table optionnel), charts optionnels, sources.
+Conventions de tableau: suffixe (pos) = vert, (neg) = rouge; mot-cle total en fin de ligne = ligne de total; align par colonne left ou num. Devise explicite, virgule decimale, chiffres pivots sources.
 
-Interdits: pas de tiret cadratin dans les textes rédigés; pas de couleur hors palette; pas de logo en simple texte.
+## 3. Appeler le service de rendu
 
-## 2. Grammaire de mise en page
+Le moteur de charte est un service HTTP sur le VPS. Son URL et son jeton sont fournis par les secrets de l'agent: DFC_RENDER_URL et DFC_RENDER_TOKEN. Tu envoies le pack, tu recois le PDF.
 
-Cover: fond anthracite plein, barre or en haut à gauche, logo blanc centré, titre capitales, sous-titre or, tableau clé/valeur à liseré or, mention de confidentialité en pied. Pages internes: en-tête = monogramme à gauche + nom du document à droite, AU-DESSUS d'une double bande or/noir; pied = filet gris, « DualForce Capital Ltd | Confidentiel | référence » à gauche, numéro de page à droite. Bandeau de section: bloc sombre, liseré or à gauche, titre capitales blanches, sous-titre or. Bande KPI: fond crème, trois chiffres centrés. Encadré « à retenir »: fond crème, liseré or. Tableaux: en-tête sombre texte blanc, lignes alternées blanc cassé, totaux crème gras, chiffres positifs verts, négatifs rouges.
+Ecris ton pack dans un fichier (par exemple pack.yaml), puis:
 
-## 3. Moteur de rendu (fichiers de ce skill)
+    curl -sS -X POST "$DFC_RENDER_URL" \
+      -H "Authorization: Bearer $DFC_RENDER_TOKEN" \
+      -H "Content-Type: application/x-yaml" \
+      --data-binary @pack.yaml \
+      -o sortie.pdf -w "%{http_code}"
 
-- PDF (rendu le plus fidèle, moteur phare): `render.py` (Chromium/Playwright) rend une cover pleine page puis les pages internes avec en-tête et pied courants, et fusionne (pdfunite). Le contenu et les métadonnées sont injectés par `build.py` dans les gabarits `templates/`.
-- Word éditable: `docx_build.js` (docx-js).
-- PowerPoint éditable: `pptx_build.js` (pptxgenjs).
-- Graphiques à la palette: `dfc_charts.py` (matplotlib) — barres, courbe, donut.
-- Feuille de style commune: `dfc-brand.css`. Logos: `assets/`.
+Un code 200 et un fichier sortie.pdf non vide = rendu reussi. Livre alors le fichier PDF directement (joins-le a ta reponse ou a la tache), pas seulement son chemin.
 
-Dépendances: Chromium (Playwright), Node avec docx-js et pptxgenjs, python avec Pillow et matplotlib, poppler (pdftoppm, pdfunite), LibreOffice (soffice) pour convertir docx/pptx en PDF de contrôle. Vérifier leur présence avant de rendre; installer ce qui manque quand le réseau le permet. Si une dépendance manque et ne s'installe pas, livrer le pack de contenu et le signaler, sans improviser d'habillage.
+Si le code n'est pas 200, ou si DFC_RENDER_URL / DFC_RENDER_TOKEN sont absents, ou si le PDF est vide: n'improvise pas. Rends le pack de contenu YAML que tu as ecrit, colle le code et le message d'erreur exacts, et signale que le service de rendu est injoignable.
 
-Contrôle qualité obligatoire: après tout rendu, convertir en images et les regarder (cover plus une page interne au minimum). Vérifier logo, palette, en-tête au-dessus de la bande, tableaux, chiffres verts/rouges, absence de débordement. Ne remettre un document qu'après cette vérification visuelle.
+## 4. Structure obligatoire par type
 
-## 4. Du contenu au document: le pack de contenu
+Rapport de regime ou comite (playbook section 11), dans cet ordre: Executive Summary, Dashboard macro (G/I/L par zone), Probabilites R1/R2/R3/R4, Policy overlay, Scenarios, Cross-asset, Allocation (proposee, sous reserve de signature PM), Stock-picking, AT/liquidite, Risk, Monitoring, Registre de decision. Chaque bloc porte le role producteur. Aucune allocation actee: proposee, en attente de signature.
+Arrete de NAV: cover, synthese (trois KPI), composition poche par poche, methodologie, souscriptions, change, confidentialite.
 
-Le contenu arrive au format DFC-CONTENT-PACK v1 (voir spec DFC-PACK-001): type de document, référence, titre, sous-titre, classification, métadonnées de couverture, exactement trois KPI, sections (titre, sous-titre, corps, encadré optionnel, tableau optionnel avec suffixes pos/neg/total), graphiques optionnels, sources. Remplir les gabarits avec ce pack, puis rendre. Ne jamais mettre en forme à la main hors moteur.
+## 5. Reference et confidentialite
 
-## 5. Structure obligatoire par type de document
+Reference: DFC-[type]-[geographie]-[annee]-[sequence]. Bandeau de confidentialite systematique. La diffusion externe reste sous gate de communication: un document interne ne se diffuse pas sans validation humaine explicite.
 
-Rapport de régime / comité (playbook §11), dans cet ordre: Executive Summary (régime dominant, changements, convictions, risques), Dashboard macro (G/I/L par zone), Probabilités (R1/R2/R3/R4 et variations), Policy/news overlay, Scénarios (central, upside, downside, tail risk), Cross-asset, Allocation (proposée, sous réserve de signature PM humaine), Stock-picking (top longs, top shorts, watchlist), AT/liquidité (setups), Risk (concentrations, corrélations, stress, liquidité), Monitoring (indicateurs et conditions de révision), Registre de décision. Chaque bloc porte le rôle producteur. Aucune allocation ni décision présentée comme actée: « proposé, en attente de signature ».
+## 6. Discipline
 
-Arrêté de NAV: cover + synthèse (3 KPI: prix de l'action, variation, NAV nette) + composition poche par poche + méthodologie + traitement des souscriptions + taux de change + confidentialité. Devise explicite, virgule décimale.
-
-## 6. Référence et confidentialité
-
-Référence document: `DFC-[type]-[géographie/programme]-[année]-[séquence]-[suffixe]`. Bandeau de confidentialité systématique (INTERNE DFC, revue CEO, diffusion externe interdite pour les documents internes). La diffusion externe reste sous gate de communication: un document interne ne se diffuse pas sans validation humaine explicite.
-
-## 7. Discipline
-
-Un livrable DFC se reconnaît au premier coup d'oeil: anthracite et or, monogramme, structure institutionnelle. Si le rendu ne ressemble pas à la base documentaire DFC, il est faux, quel que soit le fond. La forme fait partie de la crédibilité du fonds.
+Un livrable DFC se reconnait au premier coup d'oeil: anthracite et or, monogramme, structure institutionnelle. La forme fait partie de la credibilite du fonds. Si tu ne peux pas produire a la charte via le service, tu livres le fond (le pack) et tu le dis; tu ne livres jamais un faux habillage.
