@@ -1,0 +1,44 @@
+doc_type: nav_note
+reference: DFC-NAV-DCA-2026-001
+title: Note d'arrêté de la valeur liquidative
+subtitle: Programme d'investissement progressif · Août 2026
+classification: Confidentiel
+confidential: Document confidentiel. Réservé aux souscripteurs et actionnaires autorisés de DualForce Capital Ltd.
+cover_meta:
+  - [Émetteur, "DualForce Capital Ltd, société de droit britannique"]
+  - [Objet, "Arrêté mensuel de la valeur liquidative et du prix de souscription"]
+  - [Date d'arrêté, "31 août 2026"]
+  - [Périmètre, "Portefeuille opérationnel, hors poche dédiée"]
+  - [Devise de référence, "Livre sterling (GBP)"]
+  - [Classification, "Confidentiel"]
+  - [Référence, "DFC-NAV-DCA-2026-001"]
+sections:
+  - heading: "1. Synthèse de l'arrêté"
+    subhead: "Le chiffre qui engage le mois"
+    kpis:
+      - ["1 051,62 £", "Prix de l'action, août 2026"]
+      - ["+5,162 %", "Variation de la NAV sur le mois"]
+      - ["3 765,18 £", "NAV opérationnelle nette"]
+    body: |
+      La valeur liquidative du portefeuille opérationnel de DualForce Capital Ltd est arrêtée au 31 août 2026 à **3 765,18 £**, contre 3 580,35 £ au 31 juillet 2026. La progression du mois s'établit à **+5,162 %**, soit +184,83 £, après provision des frais de gestion et neutralisation des souscriptions.
+
+      Appliquée à la valeur de référence de 1 000,00 £ retenue au lancement du programme, cette variation porte le prix de l'action à **1 051,62 £**.
+    retain: |
+      La performance du mois provient très majoritairement de la poche Actions, qui apporte 138,94 £ sur les 184,83 £ de variation. Aucun incident de crédit, aucune dépréciation.
+  - heading: "2. Composition et valorisation"
+    subhead: "Poche par poche, aux deux dates d'arrêté"
+    table:
+      columns: [Poche, "31/07/2026 (£)", "31/08/2026 (£)", "Variation (£)"]
+      align: [left, num, num, num]
+      rows:
+        - [Actions (compte de courtage institutionnel), "1 747,07", "1 886,01", "+138,94 (pos)"]
+        - [Crypto, "476,83", "517,22", "+40,39 (pos)"]
+        - [Dette privée, "1 248,57", "1 263,04", "+14,47 (pos)"]
+        - [Crowd2fund, "113,97", "114,61", "+0,64 (pos)"]
+        - [Trésorerie, "-6,09", "251,05", "+257,14 (pos)"]
+        - [Actif total, "3 580,35", "4 031,93", "+451,58", total]
+        - [Provision de frais de gestion, "—", "-9,52", "-9,52 (neg)"]
+        - [Souscriptions du programme, "—", "-257,23", "-257,23 (neg)"]
+        - [NAV opérationnelle nette, "3 580,35", "3 765,18", "+184,83 (pos)", total]
+sources: |
+  Relevé d'activité mensuel du dépositaire (poche Actions, 31/08/2026); taux de change dépositaire.
