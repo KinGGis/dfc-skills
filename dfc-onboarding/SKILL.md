@@ -31,7 +31,9 @@ Le RIB de versement n'est jamais en dur dans ce skill. Il est lu au moment de l'
 - Parametres de versement de l'investisseur : montant et frequence (jour du mois).
 - Source NAV validee et jour d'arrete (voir piece jointe NAV Methodology).
 
-## Pieces jointes disponibles (dossier assets/)
+## Pieces jointes disponibles (workspace de l'agent)
+
+Les documents a joindre ne sont pas dans ce skill (un skill ne porte que du texte). Ils vivent dans le workspace de l'agent, dossier mailer/attachments/onboarding/. Tu les joins depuis ce chemin au moment de l'envoi. Si un document requis est absent de ce dossier, tu n'envoies pas : tu escalades.
 
 - Etape 1 : DFC_DCA_Shareholder_Letter_FR.pdf, DFC_DCA_Information_Memorandum_FR.pdf, DFC_DCA_FAQs_FR.pdf
 - Etape 2 : DFC_DCA_Subscription_Agreement_FR.pdf, DFC_DCA_Risk_Disclosure_FR.pdf, DFC_DCA_Subscription_Form_FR.pdf, DFC_DCA_Investor_Acknowledgement_FR.pdf
